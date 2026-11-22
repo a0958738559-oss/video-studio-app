@@ -1,1 +1,334 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#141c42">
+<meta name="description" content="手機上的影片剪輯、字幕、配音與分享工具。素材留在自己的裝置上。">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" href="./icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>全能影片工作室</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif;color:#e9edff;background:#0c122c;font-synthesis:none}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#263878 0%,#0c122c 52%);min-height:100vh}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}a{color:#a4dcff}
+header{padding:23px 15px 19px;background:linear-gradient(120deg,#283b8d,#552fa1);border-bottom:1px solid #6873bd;box-shadow:0 8px 28px #05081966}header .inner{max-width:1080px;margin:auto;display:flex;align-items:center;gap:14px}header img{height:62px;width:62px;object-fit:cover;border-radius:16px;box-shadow:0 3px 14px #0007}h1{font-size:clamp(22px,4vw,30px);margin:0 0 4px;letter-spacing:.3px}header p{font-size:13px;color:#dbe2ff;margin:0}
+main{max-width:1080px;padding:16px 12px 80px;margin:auto;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;align-items:start}.panel{background:#151e3c;border:1px solid #35436d;border-radius:18px;padding:17px;box-shadow:0 8px 30px #0508193b}.panel h2{font-size:18px;margin:0 0 13px}.panel h3{font-size:16px;margin:0 0 10px}.hint{font-size:12px;color:#b1bddb;line-height:1.65;margin:9px 0}.small{font-size:13px}.muted{color:#bcc6e5}.editor{grid-column:1;grid-row:1 / span 3}.right{grid-column:2}.group{display:flex;flex-wrap:wrap;gap:8px;margin:11px 0}.primary,.secondary,.danger,.linkbtn{border:1px solid transparent;border-radius:10px;padding:10px 14px;font-weight:700;color:white;background:#6551d8;min-height:43px}.primary{background:linear-gradient(120deg,#3f75e6,#8246cd)}.secondary{background:#29385f;border-color:#53618a}.danger{background:#793048;border-color:#a04963}.linkbtn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;background:#27365e;border-color:#485b8c}.full{width:100%}.pill{background:#24355e;border:1px solid #4768a1;padding:4px 10px;border-radius:20px;color:#b8e6ff;font-size:12px;display:inline-flex;align-items:center;gap:5px}
+.stage-wrap{background:#070b17;border-radius:12px;display:flex;justify-content:center;align-items:center;min-height:280px;max-height:610px;overflow:hidden;border:1px solid #293b62}.stage-wrap canvas{display:block;max-width:100%;max-height:560px;width:auto;height:auto;object-fit:contain;aspect-ratio:9 / 16;background:#060918}.status{border-radius:11px;padding:10px 12px;background:#212f55;color:#e5edff;font-size:13px;line-height:1.5;margin-top:10px;min-height:41px}.status.warn{background:#5a3d24;color:#fff0ce}.status.good{background:#1e4e4a;color:#e4fff0}
+input[type=file]{display:none}.field{display:flex;flex-direction:column;gap:5px;flex:1;min-width:120px;margin-bottom:8px}label{font-size:13px;color:#c7d4f5}input[type=text],input[type=number],textarea,select{width:100%;min-height:39px;padding:9px 10px;border-radius:9px;background:#0d1530;border:1px solid #4a5b87;color:#fff;outline:none}textarea{min-height:70px;resize:vertical}input:focus,textarea:focus,select:focus{border-color:#95b5ff}.row{display:flex;align-items:flex-end;gap:9px;flex-wrap:wrap}.row .field{flex:1}
+.item{display:flex;gap:9px;align-items:center;padding:10px;border-radius:11px;border:1px solid #34446b;background:#101932;margin:8px 0;cursor:pointer}.item.selected{border-color:#8db5ff;background:#243366}.thumb{width:53px;height:67px;flex-shrink:0;border-radius:7px;object-fit:cover;background:#293b62;display:flex;align-items:center;justify-content:center;font-size:24px;overflow:hidden}.thumb img{width:100%;height:100%;object-fit:cover}.item .details{flex:1;min-width:0}.item .filename{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px}.item .meta{font-size:12px;color:#b6c8e8;margin-top:4px}.item .actionBtns{display:flex;flex-direction:column;gap:3px}.mini{border:1px solid #425682;background:#2b3960;color:#eef5ff;border-radius:6px;padding:4px 7px;font-size:12px;min-width:31px}.empty{text-align:center;border:1px dashed #61729f;padding:25px 15px;color:#bbc9ec;border-radius:12px;line-height:1.6}.separator{border:0;border-top:1px solid #344567;margin:16px 0}progress{width:100%;height:12px;accent-color:#7d86ff}.hidden{display:none!important}.shareGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.shareGrid button{min-width:0}.footer{text-align:center;color:#8f9ac4;font-size:12px;margin:25px 0}
+@media(max-width:780px){main{display:block;padding:10px 10px 70px}.panel{margin-bottom:13px;padding:14px}.stage-wrap{min-height:240px}header{padding:16px 11px}header img{width:52px;height:52px}.panel h2{font-size:17px}.editor,.right{grid-column:auto;grid-row:auto}}
+</style>
+</head>
+<body>
+<header><div class="inner"><img src="./icon-192.png" alt="影片工作室圖示"><div><h1>🎬 全能影片工作室</h1><p>照片・影片剪輯・字幕・配音・匯出與分享</p><span class="pill" id="pwaPill">📱 可加入手機桌面</span></div></div></header>
+<main>
+<section class="panel editor">
+<h2>① 預覽與輸出</h2>
+<div class="stage-wrap" id="stageWrap"><canvas id="stage" width="540" height="960" aria-label="影片預覽畫面"></canvas></div>
+<div id="status" class="status" role="status" aria-live="polite">請先加入照片或影片，開始製作。</div>
+<div class="group"><button id="previewBtn" class="secondary">▶ 預覽整支影片</button><button id="stopBtn" class="secondary" disabled>■ 停止</button></div>
+<div class="row"><div class="field"><label for="projectName">作品名稱</label><input id="projectName" type="text" value="我的影片" maxlength="35"></div><div class="field"><label for="ratio">影片比例</label><select id="ratio"><option value="9:16">9:16｜手機直式</option><option value="16:9">16:9｜橫式</option><option value="1:1">1:1｜正方形</option></select></div><div class="field"><label for="quality">畫面畫質</label><select id="quality"><option value="540">省容量（540p）</option><option value="720" selected>清晰（720p）</option></select></div></div>
+<div class="field"><label for="movieTitle">全片開頭標題（可留空）</label><input id="movieTitle" type="text" maxlength="45" placeholder="例如：幸福婚紗紀念"></div>
+<div class="row"><div class="field"><label for="titleColor">字幕顏色</label><select id="titleColor"><option value="#ffffff">白色</option><option value="#ffe46e">金黃色</option><option value="#93edff">水藍色</option><option value="#ffa9d9">粉紅色</option></select></div><div class="field"><label for="transition">轉場</label><select id="transition"><option value="none">直接切換</option><option value="fade">淡入（0.4 秒）</option></select></div></div>
+<hr class="separator">
+<button id="exportBtn" class="primary full">🎞️ 合成影片並匯出</button>
+<progress id="progress" class="hidden" value="0" max="100"></progress>
+<div id="output" class="hidden">
+<h3>✅ 影片已完成</h3><p id="formatNote" class="hint"></p>
+<video id="resultVideo" controls playsinline preload="metadata" style="width:100%;border-radius:10px;max-height:340px;background:#000"></video>
+<div class="group"><button id="downloadBtn" class="primary">⬇️ 下載影片到手機</button><button id="shareBtn" class="secondary">📤 手機直接分享</button></div>
+<h3>發送到平台</h3>
+<div class="shareGrid"><button class="secondary platform" data-url="https://studio.youtube.com/">▶ YouTube</button><button class="secondary platform" data-url="https://www.tiktok.com/upload">♪ TikTok</button><button class="secondary platform" data-url="https://www.facebook.com/">f Facebook</button><button id="lineBtn" class="secondary">💬 LINE</button></div>
+<p class="hint">按「下載」儲存影片，再到平台選取該檔案上傳；「手機直接分享」會開啟系統分享選單（手機支援時）。此 App 不會自行發布至你的帳號。</p>
+</div>
+<p class="hint">輸出優先使用 MP4；若瀏覽器不支援，會改用 WebM。要發送到不接受 WebM 的平台，須先轉成 MP4。請使用 Chrome，並在匯出期間保持畫面開啟。</p>
+</section>
+<section class="panel right"><h2>② 加入素材、調整順序</h2>
+<div class="group"><label for="filePick" class="primary" style="display:inline-flex;align-items:center">＋ 選照片／影片</label><input id="filePick" type="file" accept="image/*,video/*" multiple><button id="newBtn" class="danger">清空專案</button></div>
+<p class="hint">一次可選多張照片和影片。點選素材可剪輯，使用 ↑ ↓ 調整播放順序。</p>
+<div id="timeline"><div class="empty">尚未加入素材<br>按「＋ 選照片／影片」開始</div></div>
+<div id="summary" class="hint"></div>
+<hr class="separator">
+<div id="editArea" class="hidden"><h3>編輯目前選取的片段</h3><p id="selectedName" class="small"></p>
+<div class="row" id="photoControls"><div class="field"><label for="photoDuration">照片停留秒數</label><input id="photoDuration" type="number" min="1" max="30" step="0.5"></div></div>
+<div class="row hidden" id="videoControls"><div class="field"><label for="videoIn">影片開始秒數</label><input id="videoIn" type="number" min="0" step="0.1"></div><div class="field"><label for="videoOut">影片結束秒數</label><input id="videoOut" type="number" min="0.1" step="0.1"></div></div>
+<div class="field"><label for="caption">這段影片的字幕（可留空）</label><textarea id="caption" rows="2" maxlength="120" placeholder="例如：平安健康，幸福快樂"></textarea></div>
+<div class="group"><button id="saveEditBtn" class="primary">儲存片段修改</button><button id="deleteBtn" class="danger">刪除此片段</button></div></div>
+</section>
+<section class="panel right"><h2>③ 背景音樂與真人配音</h2>
+<div class="group"><label for="musicPick" class="secondary" style="display:inline-flex;align-items:center">♫ 選擇背景音樂</label><input id="musicPick" type="file" accept="audio/*"><button id="clearMusic" class="secondary">移除音樂</button></div>
+<p id="musicInfo" class="hint">尚未選擇音樂</p>
+<div class="row"><div class="field"><label for="musicVol">音樂音量</label><input type="range" id="musicVol" min="0" max="1" step="0.05" value="0.35"></div><div class="field"><label for="videoVol">原影片聲音</label><input type="range" id="videoVol" min="0" max="1" step="0.05" value="0.8"></div></div>
+<hr class="separator">
+<div class="group"><button id="recordBtn" class="primary">🎙️ 開始錄製配音</button><button id="stopRecordBtn" class="danger" disabled>■ 結束錄音</button><button id="clearVoice" class="secondary">移除配音</button></div>
+<p id="voiceInfo" class="hint">尚未錄製配音；錄音會從影片開始處播放。</p>
+<audio id="voicePlayer" controls class="hidden" style="width:100%"></audio>
+<p class="hint">麥克風錄音需要在 HTTPS（例如 GitHub Pages）下使用，並允許瀏覽器存取麥克風。背景音樂請使用你有權使用的音訊。</p>
+</section>
+<section class="panel right"><h2>④ 加入手機桌面</h2>
+<button id="installBtn" class="primary full">📲 安裝到手機桌面</button>
+<p class="hint" id="installHint">在 Chrome 開啟已發布的 App，按「安裝到手機桌面」。若未跳出安裝視窗，請點 Chrome 的「⋮」選單，再選「安裝應用程式」或「加到主畫面」。</p>
+<p class="hint">App 本身可離線開啟；素材與編輯資料儲存在本機瀏覽器。請保留原始影片，避免清除瀏覽器網站資料後無法復原。</p>
+</section>
+</main>
+<div class="footer">全能影片工作室｜影片素材留在您的裝置上，不會自動上傳到伺服器</div>
+<video id="sourceVideo" playsinline preload="auto" style="display:none"></video>
+<script>
+'use strict';
+const $ = (id)=>document.getElementById(id);
+const ui = {
+ stage:$('stage'),status:$('status'),timeline:$('timeline'),summary:$('summary'),
+ editArea:$('editArea'),sourceVideo:$('sourceVideo'),output:$('output'),progress:$('progress')
+};
+const ctx=ui.stage.getContext('2d',{alpha:false});
+let items=[], music=null,voice=null, selected=null, db=null, busy=false, abortRun=false;
+let voiceRecorder=null, voiceStream=null,voiceChunks=[], resultBlob=null,resultUrl=null,resultExt='webm';
+let installPrompt=null, audioSession=null;
+const SAVEKEY='video-studio-v1-project';
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>('a'+Date.now().toString(36)+Math.random().toString(36).slice(2,9));
+const number=(v,def)=>Number.isFinite(+v)?+v:def;
+const durationOf=item=>item.kind==='image'?Number(item.duration):Math.max(0,Number(item.out)-Number(item.start));
+const totalSeconds=()=>items.reduce((s,it)=>s+durationOf(it),0);
+const fmt=n=>`${Math.max(0,n).toFixed(1)} 秒`;
+function say(message,style=''){ui.status.className='status'+(style?' '+style:'');ui.status.textContent=message;}
+function refreshCanvasSize(){
+ const ratio=$('ratio').value,q=Number($('quality').value);
+ let w=q,h=q;
+ if(ratio==='9:16'){w=q;h=Math.round(q*16/9)}
+ if(ratio==='16:9'){w=Math.round(q*16/9);h=q}
+ ui.stage.width=w;ui.stage.height=h;
+ ui.stage.style.aspectRatio=`${w} / ${h}`;
+ drawIdle(); saveProject();
+}
+function background(){const w=ui.stage.width,h=ui.stage.height;const g=ctx.createLinearGradient(0,0,w,h);g.addColorStop(0,'#151f55');g.addColorStop(1,'#050916');ctx.fillStyle=g;ctx.fillRect(0,0,w,h);}
+function wrapText(str,maxWidth,font){ctx.font=font;const lines=[];for(const block of String(str).split('\n')){
+ let line='';for(const c of block){if(ctx.measureText(line+c).width>maxWidth&&line){lines.push(line);line=c}else line+=c;}lines.push(line||' ');
+}return lines.slice(0,5);}
+function textOverlay(){const w=ui.stage.width,h=ui.stage.height,scale=Math.min(w,h)/540;
+ const title=$('movieTitle').value.trim();let item=items.find(x=>x.id===selected);const clipCaption=drawCaption;
+ ctx.textAlign='center';ctx.lineJoin='round';ctx.strokeStyle='rgba(0,0,0,.9)';ctx.fillStyle=$('titleColor').value;
+ if(title){const size=Math.round(Math.max(22,34*scale));const font=`800 ${size}px system-ui, "Noto Sans TC", sans-serif`;const lines=wrapText(title,w*.86,font);
+ ctx.font=font;ctx.lineWidth=Math.max(3,5*scale);lines.forEach((line,i)=>{let y=Math.round(h*.085+i*size*1.25);ctx.strokeText(line,w/2,y);ctx.fillText(line,w/2,y);});}
+ if(clipCaption){const size=Math.round(Math.max(20,29*scale));const font=`800 ${size}px system-ui,"Noto Sans TC",sans-serif`;const lines=wrapText(clipCaption,w*.86,font);
+ ctx.font=font;ctx.lineWidth=Math.max(3,5*scale);const base=h*.88-(lines.length-1)*size*1.23;lines.forEach((line,i)=>{const y=base+i*size*1.23;ctx.strokeText(line,w/2,y);ctx.fillText(line,w/2,y);});}
+}
+let drawCaption='';
+function cover(img){const w=ui.stage.width,h=ui.stage.height,iw=img.videoWidth||img.naturalWidth||img.width,ih=img.videoHeight||img.naturalHeight||img.height;
+ if(!(iw>0&&ih>0)){background();return}
+ const scale=Math.max(w/iw,h/ih),dw=iw*scale,dh=ih*scale;
+ ctx.drawImage(img,(w-dw)/2,(h-dh)/2,dw,dh);
+}
+function drawFrame(source,caption='',fade=1){background();if(source){ctx.save();ctx.globalAlpha=fade;cover(source);ctx.restore();}drawCaption=caption;textOverlay();}
+function drawIdle(){background();const w=ui.stage.width,h=ui.stage.height;ctx.textAlign='center';ctx.fillStyle='#b9caff';ctx.font=`700 ${Math.round(Math.min(w,h)*.07)}px system-ui`;ctx.fillText('🎬 影片工作室',w/2,h*.46);ctx.font=`${Math.round(Math.min(w,h)*.04)}px system-ui`;ctx.fillText('加入素材後即可預覽',w/2,h*.52);}
+function updateList(){
+ if(!items.length){ui.timeline.innerHTML='<div class="empty">尚未加入素材<br>按「＋ 選照片／影片」開始</div>';ui.summary.textContent='';}
+ else {
+ ui.timeline.innerHTML=items.map((it,i)=>`<div class="item ${it.id===selected?'selected':''}" data-id="${it.id}">
+ <div class="thumb">${it.kind==='image'?`<img src="${esc(it.url)}" alt="照片縮圖">`:'🎥'}</div>
+ <div class="details"><div class="filename">${i+1}. ${esc(it.name)}</div><div class="meta">${it.kind==='image'?'照片':'影片'}｜${fmt(durationOf(it))}${it.caption?'｜有字幕':''}</div></div>
+ <div class="actionBtns"><button class="mini" data-move="up" aria-label="向前移動">↑</button><button class="mini" data-move="down" aria-label="向後移動">↓</button></div></div>`).join('');
+ ui.summary.textContent=`共 ${items.length} 個片段｜預計長度 ${fmt(totalSeconds())}`;
+ }
+ if(!items.some(it=>it.id===selected))selected=null;
+ ui.editArea.classList.toggle('hidden',!selected);
+}
+function selectItem(id){if(busy)return;selected=id;const it=items.find(x=>x.id===id);updateList();if(!it)return;
+ $('selectedName').textContent=it.name;$('photoControls').classList.toggle('hidden',it.kind!=='image');$('videoControls').classList.toggle('hidden',it.kind!=='video');
+ $('photoDuration').value=it.kind==='image'?it.duration:3;$('videoIn').value=it.start||0;$('videoOut').value=it.out||0;$('videoIn').max=it.outMax||it.out;$('videoOut').max=it.outMax||it.out;$('caption').value=it.caption||'';
+ if(it.kind==='image'){loadImage(it).then(img=>drawFrame(img,it.caption)).catch(()=>drawIdle());}
+ else {loadSingleVideoFrame(it).catch(()=>drawIdle());}
+}
+function ensureItemURL(x){if(!x.url&&x.blob)x.url=URL.createObjectURL(x.blob);return x.url;}
+function loadImage(it){if(it.image&&it.image.complete)return Promise.resolve(it.image);
+ return new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{it.image=img;resolve(img)};img.onerror=()=>reject(new Error('無法讀取圖片：'+it.name));img.src=ensureItemURL(it);});}
+function loadedMedia(el,url){return new Promise((resolve,reject)=>{const timer=setTimeout(()=>{cleanup();reject(new Error('影片讀取逾時'))},18000);
+ function cleanup(){clearTimeout(timer);el.removeEventListener('loadedmetadata',ok);el.removeEventListener('error',bad)}
+ function ok(){cleanup();resolve()}function bad(){cleanup();reject(new Error('影片格式不支援'))}
+ el.addEventListener('loadedmetadata',ok);el.addEventListener('error',bad);el.src=url;el.load();});}
+function seek(el,t){return new Promise((resolve,reject)=>{if(Math.abs(el.currentTime-t)<0.075){if(el.readyState>=2){resolve();return}const timer=setTimeout(()=>{el.removeEventListener('loadeddata',ondata);resolve()},7000);function ondata(){clearTimeout(timer);el.removeEventListener('loadeddata',ondata);resolve()}el.addEventListener('loadeddata',ondata);return}
+ const timer=setTimeout(()=>{clean();resolve()},7000);function clean(){clearTimeout(timer);el.removeEventListener('seeked',ok);el.removeEventListener('error',bad)}
+ function ok(){clean();resolve()}function bad(){clean();reject(new Error('影片定位失敗'))}
+ el.addEventListener('seeked',ok);el.addEventListener('error',bad);try{el.currentTime=t}catch(e){clean();resolve()}
+ });}
+async function loadSingleVideoFrame(it){const el=document.createElement('video');el.muted=true;el.playsInline=true;el.preload='auto';try{
+ await loadedMedia(el,ensureItemURL(it));await seek(el,it.start);if(selected===it.id&&!busy)drawFrame(el,it.caption);
+ }finally{el.removeAttribute('src');el.load()}}
+function saveProject(){try{localStorage.setItem(SAVEKEY,JSON.stringify({items:items.map(({id,kind,name,duration,start,out,outMax,caption})=>({id,kind,name,duration,start,out,outMax,caption})),
+ music:music?{id:music.id,name:music.name}:null,voice:voice?{id:voice.id,name:voice.name}:null,
+ projectName:$('projectName').value,ratio:$('ratio').value,quality:$('quality').value,
+ movieTitle:$('movieTitle').value,titleColor:$('titleColor').value,transition:$('transition').value,
+ musicVol:$('musicVol').value,videoVol:$('videoVol').value}));}catch(e){console.warn('儲存專案設定失敗',e)}}
+function openDb(){return new Promise((resolve,reject)=>{if(!('indexedDB' in window)){reject(new Error('瀏覽器沒有本機資料庫'));return}
+ const req=indexedDB.open('video-studio-local-assets',1);req.onupgradeneeded=()=>req.result.createObjectStore('files',{keyPath:'id'});
+ req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});}
+function putFile(obj){if(!db)return Promise.resolve(false);return new Promise((resolve,reject)=>{const req=db.transaction('files','readwrite').objectStore('files').put({id:obj.id,blob:obj.blob,name:obj.name});req.onsuccess=()=>resolve(true);req.onerror=()=>reject(req.error)});}
+function getFile(id){if(!db)return Promise.resolve(null);return new Promise(resolve=>{const req=db.transaction('files','readonly').objectStore('files').get(id);req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>resolve(null)});}
+function deleteFile(id){if(!db)return;try{db.transaction('files','readwrite').objectStore('files').delete(id)}catch(e){console.warn(e)}}
+async function restore(){try{db=await openDb()}catch(e){say('瀏覽器無法儲存本機專案；本次剪輯仍可使用。','warn')}
+ let state;try{state=JSON.parse(localStorage.getItem(SAVEKEY)||'null')}catch(e){state=null}
+ if(!state){refreshCanvasSize();return}
+ for(const key of ['projectName','ratio','quality','movieTitle','titleColor','transition','musicVol','videoVol'])if(state[key]!=null&&$(key))$(key).value=state[key];
+ let lost=0;for(const meta of state.items||[]){const file=await getFile(meta.id);if(file){items.push({...meta,blob:file.blob,url:URL.createObjectURL(file.blob)})}else lost++}
+ if(state.music){const f=await getFile(state.music.id);if(f)music={...state.music,blob:f.blob,url:URL.createObjectURL(f.blob)}}
+ if(state.voice){const f=await getFile(state.voice.id);if(f)voice={...state.voice,blob:f.blob,url:URL.createObjectURL(f.blob)}}
+ updateSoundUI();updateList();refreshCanvasSize();if(items.length)say(`已還原 ${items.length} 個片段${lost?`，有 ${lost} 個素材找不到`:''}。`,lost?'warn':'good');
+}
+async function addAsset(file){const kind=file.type.startsWith('image/')?'image':file.type.startsWith('video/')?'video':null;if(!kind)throw new Error(`不支援的格式：${file.name}`);
+ const it={id:uid(),kind,name:file.name,blob:file,url:URL.createObjectURL(file),duration:4,start:0,out:0,outMax:0,caption:''};
+ try{if(kind==='video'){const el=document.createElement('video');el.preload='metadata';await loadedMedia(el,it.url);const len=el.duration;if(!Number.isFinite(len)||len<=0)throw new Error('影片無法判讀長度：'+file.name);it.out=Math.round(Math.min(len,120)*10)/10;it.outMax=len;el.removeAttribute('src');el.load();}
+ else await loadImage(it);
+ items.push(it);try{await putFile(it)}catch(e){say('空間不足，素材只在此次開啟期間有效。請勿關閉畫面。','warn')};
+ saveProject();return it;
+ }catch(e){URL.revokeObjectURL(it.url);throw e}}
+function updateSoundUI(){ $('musicInfo').textContent=music?'已選擇：'+music.name:'尚未選擇音樂';$('voiceInfo').textContent=voice?'已錄製：'+voice.name+'（配音從片頭開始）':'尚未錄製配音；錄音會從影片開始處播放。';
+ $('voicePlayer').classList.toggle('hidden',!voice);if(voice)$('voicePlayer').src=voice.url;else $('voicePlayer').removeAttribute('src');}
+async function setAudio(kind,file){if(!file||!file.type.startsWith('audio/')){say('請選擇音訊檔。','warn');return}
+ const prev=kind==='music'?music:voice;if(prev){URL.revokeObjectURL(prev.url);deleteFile(prev.id)}
+ const next={id:uid(),name:file.name,blob:file,url:URL.createObjectURL(file)};
+ if(kind==='music')music=next;else voice=next;
+ try{await putFile(next)}catch(e){say('音訊可能無法保存到下次開啟。','warn')}
+ updateSoundUI();saveProject();say(kind==='music'?'已加入背景音樂。':'配音已加入作品。','good');}
+function clearAudio(kind){const prev=kind==='music'?music:voice;if(prev){URL.revokeObjectURL(prev.url);deleteFile(prev.id)}
+ if(kind==='music')music=null;else voice=null;updateSoundUI();saveProject();}
+function removeItem(){const ix=items.findIndex(x=>x.id===selected);if(ix<0)return;const [it]=items.splice(ix,1);URL.revokeObjectURL(it.url);deleteFile(it.id);selected=null;updateList();saveProject();drawIdle()}
+function saveEdit(){const it=items.find(x=>x.id===selected);if(!it)return;
+ if(it.kind==='image'){let n=number($('photoDuration').value,4);if(n<1||n>30){say('照片秒數應介於 1 到 30 秒。','warn');return}it.duration=n;}
+ else {const start=number($('videoIn').value,0),end=number($('videoOut').value,0);
+ if(start<0||end<=start||(it.outMax>0&&end>it.outMax+0.05)){say('請確認開始與結束秒數，結束必須晚於開始。','warn');return}
+ it.start=start;it.out=end;}
+ it.caption=$('caption').value.trim();updateList();saveProject();say('片段修改已儲存。','good');selectItem(it.id);}
+function disableControls(on){busy=on;for(const id of ['previewBtn','exportBtn','filePick','newBtn','recordBtn','musicPick','saveEditBtn','deleteBtn','ratio','quality'])$(id).disabled=on;
+ $('stopBtn').disabled=!on;}
+const sleep=(ms)=>new Promise(resolve=>setTimeout(resolve,ms));
+function nextFrame(){return new Promise(resolve=>requestAnimationFrame(resolve));}
+function preferredType(){if(typeof MediaRecorder==='undefined')return null;
+ for(const type of ['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'])if(MediaRecorder.isTypeSupported(type))return type;
+ return '';
+}
+async function makeAudioSession(exporting){const Ctx=window.AudioContext||window.webkitAudioContext;if(!Ctx)throw new Error('此瀏覽器沒有音訊混合功能');
+ const ac=new Ctx(),dest=ac.createMediaStreamDestination();await ac.resume();
+ const vid=document.createElement('video');vid.playsInline=true;vid.preload='auto';vid.style.display='none';document.body.appendChild(vid);
+ function attach(el,volume){const source=ac.createMediaElementSource(el),gain=ac.createGain();gain.gain.value=volume;source.connect(gain);gain.connect(exporting?dest:ac.destination);return gain;}
+ const clipGain=attach(vid,Number($('videoVol').value));
+ const audios=[];
+ for(const [track,vol,loop] of [[music,Number($('musicVol').value),true],[voice,1,false]]){
+ if(!track)continue;const el=new Audio(track.url);el.preload='auto';el.loop=loop;el.playsInline=true;attach(el,vol);audios.push(el);
+ }
+ return {ac,dest,vid,clipGain,audios};
+}
+async function cleanAudio(session){if(!session)return;session.audios.forEach(a=>{a.pause();a.removeAttribute('src');a.load()});session.vid.pause();session.vid.removeAttribute('src');session.vid.load();session.vid.remove();try{await session.ac.close()}catch(e){}}
+async function playTimeline(session){const vid=session.vid,total=totalSeconds();let elapsed=0;
+ for(let i=0;i<items.length;i++){
+  if(abortRun)throw new Error('已中止');const it=items[i],dur=durationOf(it);
+  let source;
+  if(it.kind==='image')source=await loadImage(it);
+  else {vid.pause();await loadedMedia(vid,it.url);await seek(vid,it.start);source=vid;
+   try{await vid.play()}catch(e){throw new Error('影片無法播放：'+it.name+'。請先點選影片並確認可播放。')}}
+  const started=performance.now();let now=0;
+  do{
+   if(abortRun)throw new Error('已中止');
+   now=Math.min(dur,(performance.now()-started)/1000);
+   const fade=$('transition').value==='fade'?Math.min(1,Math.max(0.01,now/.4)):1;
+   drawFrame(source,it.caption,fade);
+   const pct=Math.min(100,((elapsed+now)/total)*100);ui.progress.value=pct;
+   if(performance.now()-lastProgressAt>450){say(`正在${runType==='export'?'合成':'預覽'}第 ${i+1}/${items.length} 段，完成 ${Math.round(pct)}%`);lastProgressAt=performance.now()}
+   await nextFrame();
+  }while(now<dur);
+  if(it.kind==='video')vid.pause();elapsed+=dur;
+ }
+}
+let runType='preview',lastProgressAt=0;
+async function run(exporting){
+ if(busy)return;if(!items.length){say('請先加入至少一張照片或一段影片。','warn');return}
+ if(exporting&&(!window.MediaRecorder||!ui.stage.captureStream)){say('目前瀏覽器不支援影片合成，請使用新版 Chrome。','warn');return}
+ if(totalSeconds()>180){say('此版本建議影片在 3 分鐘內，以免手機記憶體不足。請先縮短片段。','warn');return}
+ disableControls(true);abortRun=false;runType=exporting?'export':'preview';ui.progress.value=0;ui.progress.classList.remove('hidden');
+ let session,canvasStream,recorder;let chunks=[];
+ try{
+ session=await makeAudioSession(exporting);audioSession=session;
+ if(exporting){
+  const kind=preferredType();if(kind===null)throw new Error('瀏覽器不支援 MediaRecorder');
+  canvasStream=ui.stage.captureStream(30);const stream=new MediaStream([...canvasStream.getVideoTracks(),...session.dest.stream.getAudioTracks()]);
+  recorder=new MediaRecorder(stream,kind?{mimeType:kind,videoBitsPerSecond:2800000,audioBitsPerSecond:128000}:{});
+  recorder.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
+  const stopped=new Promise((resolve,reject)=>{recorder.onstop=resolve;recorder.onerror=e=>reject(e.error||new Error('輸出中斷'))});
+  recorder.start(1000);
+  for(const a of session.audios)try{await a.play()}catch(e){console.warn('音樂播放失敗',e)}
+  await playTimeline(session);
+  await sleep(250);recorder.stop();await stopped;
+  const mime=recorder.mimeType||kind||'video/webm';resultExt=mime.includes('mp4')?'mp4':'webm';
+  const blob=new Blob(chunks,{type:mime});if(blob.size<1000)throw new Error('影片輸出大小異常，請重試');
+  if(resultUrl)URL.revokeObjectURL(resultUrl);resultBlob=blob;resultUrl=URL.createObjectURL(blob);
+  $('resultVideo').src=resultUrl;$('output').classList.remove('hidden');
+  $('formatNote').textContent=`格式：${resultExt.toUpperCase()}｜大小：約 ${(blob.size/1024/1024).toFixed(1)} MB${resultExt==='webm'?'。若平台不接受，請轉成 MP4 再上傳。':''}`;
+  say('✅ 合成完成！按「下載影片到手機」儲存，或使用「手機直接分享」。','good');
+ } else {
+  for(const a of session.audios)try{await a.play()}catch(e){console.warn('配音播放失敗',e)}
+  await playTimeline(session);say('✅ 已播放預覽。','good');
+ }
+ }catch(e){if(recorder&&recorder.state==='recording')recorder.stop();say(abortRun?'已停止操作。':`無法完成：${e.message}`,'warn');console.error(e)}
+ finally{if(canvasStream)canvasStream.getTracks().forEach(track=>track.stop());await cleanAudio(session);audioSession=null;disableControls(false);ui.progress.classList.add('hidden');}
+}
+function safeName(){return ($('projectName').value.trim()||'我的影片').replace(/[\\/:*?"<>|]/g,'_')}
+function saveResult(){if(!resultBlob)return;const url=URL.createObjectURL(resultBlob);const a=document.createElement('a');a.href=url;a.download=`${safeName()}.${resultExt}`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),15000);say('已送出下載指令。請到手機的「下載」資料夾查看。','good');}
+async function shareResult(){if(!resultBlob)return;const file=new File([resultBlob],`${safeName()}.${resultExt}`,{type:resultBlob.type});
+ try{if(navigator.share&&(!navigator.canShare||navigator.canShare({files:[file]}))){await navigator.share({title:safeName(),files:[file]});say('已開啟手機分享功能。','good');}
+ else say('這台裝置目前無法直接分享此影片。請先下載，再到 LINE 或其他平台選取檔案。','warn');
+ }catch(e){if(e.name!=='AbortError')say('分享失敗，請先下載影片再上傳。','warn')}
+}
+async function beginVoice(){if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder){say('瀏覽器不支援錄音；請使用 HTTPS 的 Chrome。','warn');return}
+ try{voiceStream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}});
+  const mime=['audio/mp4','audio/webm;codecs=opus','audio/webm'].find(t=>MediaRecorder.isTypeSupported(t))||'';
+  voiceRecorder=new MediaRecorder(voiceStream,mime?{mimeType:mime}:{});voiceChunks=[];
+  voiceRecorder.ondataavailable=e=>{if(e.data.size)voiceChunks.push(e.data)};
+  voiceRecorder.onstop=async()=>{
+   const type=voiceRecorder.mimeType||'audio/webm';const ext=type.includes('mp4')?'m4a':'webm';const blob=new Blob(voiceChunks,{type});
+   voiceStream.getTracks().forEach(t=>t.stop());voiceStream=null;
+   $('recordBtn').disabled=false;$('stopRecordBtn').disabled=true;
+   if(blob.size){await setAudio('voice',new File([blob],`我的配音.${ext}`,{type}))}else say('錄音沒有內容，請重試。','warn');
+  };
+  voiceRecorder.start(250);$('recordBtn').disabled=true;$('stopRecordBtn').disabled=false;say('🎙️ 正在錄音…說話完畢按「結束錄音」。','warn');
+ }catch(e){say('無法啟動麥克風，請檢查權限與 HTTPS 網址。','warn')}
+}
+async function resetProject(){if(busy)return;if(!confirm('確定清空這部影片的素材、音樂與配音？此動作無法復原。'))return;
+ for(const it of items){URL.revokeObjectURL(it.url);deleteFile(it.id)}items=[];selected=null;clearAudio('music');clearAudio('voice');
+ $('movieTitle').value='';$('projectName').value='我的影片';updateList();saveProject();drawIdle();$('output').classList.add('hidden');say('專案已清空。');}
+ui.timeline.addEventListener('click',e=>{const row=e.target.closest('[data-id]');if(!row||busy)return;const id=row.dataset.id;
+ if(e.target.dataset.move){const idx=items.findIndex(x=>x.id===id),other=idx+(e.target.dataset.move==='up'?-1:1);
+  if(other>=0&&other<items.length){[items[idx],items[other]]=[items[other],items[idx]];saveProject();updateList()}return}
+ selectItem(id);
+});
+$('filePick').addEventListener('change',async e=>{const files=[...e.target.files];if(!files.length)return;
+ say(`讀取 ${files.length} 個素材中…`);let added=0,failed=[];
+ for(const file of files){try{await addAsset(file);added++}catch(err){failed.push(err.message)}}
+ e.target.value='';updateList();if(added)selectItem(items[items.length-1].id);
+ say(`已加入 ${added} 個素材。${failed.length?'失敗：'+failed.slice(0,2).join('；'):''}`,failed.length?'warn':'good');});
+$('musicPick').addEventListener('change',async e=>{if(e.target.files[0])await setAudio('music',e.target.files[0]);e.target.value=''});
+$('clearMusic').addEventListener('click',()=>clearAudio('music'));
+$('clearVoice').addEventListener('click',()=>clearAudio('voice'));
+$('recordBtn').addEventListener('click',beginVoice);
+$('stopRecordBtn').addEventListener('click',()=>{if(voiceRecorder?.state==='recording')voiceRecorder.stop()});
+$('saveEditBtn').addEventListener('click',saveEdit);$('deleteBtn').addEventListener('click',removeItem);
+$('newBtn').addEventListener('click',resetProject);
+$('previewBtn').addEventListener('click',()=>run(false));$('exportBtn').addEventListener('click',()=>run(true));
+$('stopBtn').addEventListener('click',()=>{abortRun=true;say('正在停止…')});
+$('downloadBtn').addEventListener('click',saveResult);$('shareBtn').addEventListener('click',shareResult);
+for(const e of document.querySelectorAll('.platform'))e.addEventListener('click',()=>{if(!resultBlob)return;say('請先下載成品，再到已開啟的平台上傳影片。');window.open(e.dataset.url,'_blank','noopener,noreferrer')});
+$('lineBtn').addEventListener('click',()=>{if(resultBlob)shareResult()});
+for(const id of ['projectName','movieTitle','titleColor','transition','musicVol','videoVol'])$(id).addEventListener('change',()=>{saveProject();if(!busy&&selected)selectItem(selected)});
+for(const id of ['ratio','quality'])$(id).addEventListener('change',refreshCanvasSize);
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;$('installHint').textContent='已準備好安裝！點下方「安裝到手機桌面」，即可建立桌面圖示。'});
+$('installBtn').addEventListener('click',async()=>{if(installPrompt){const prompt=installPrompt;installPrompt=null;await prompt.prompt();const choice=await prompt.userChoice;
+ if(choice.outcome==='accepted')say('安裝要求已送出。請查看手機桌面。','good');}
+ else{say('請使用 Chrome 的「⋮」選單，選「安裝應用程式」或「加到主畫面」。','warn')}});
+window.addEventListener('appinstalled',()=>{$('pwaPill').textContent='✅ 已安裝到手機'});
+if('serviceWorker' in navigator&&location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(e=>console.warn('離線功能註冊失敗',e)));
+restore().catch(e=>{console.error(e);drawIdle();say('啟動時未能讀取舊專案，仍可新建影片。','warn')});
+</script>
+</body>
+</html>
 
